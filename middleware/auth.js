@@ -3,22 +3,25 @@ const config = require('config');
 
 module.exports = function(req, res, next) {
 	// Get token from header
-	const token = req.header('x-auth-token');
+	const token = req.query['x-auth-token'];
 
-	// Check if no token
+	// Check if not token
 	if (!token) {
-		return res.status(401).json({
-			msg: 'No token, authorization denied'
-		});
+		return res.status(401).json({ msg: 'No token, fuck off' });
 	}
 
 	// Verify token
 	try {
-		const decoded = jwt.verify(token, config.get('jwtSecret'));
-
-		req.user = decoded.user;
-		next();
+		jwt.verify(token, config.get('jwtSecret'), (error, decoded) => {
+			if (error) {
+				res.status(401).json({ msg: 'Token is not valid' });
+			} else {
+				req.user = decoded.user;
+				next();
+			}
+		});
 	} catch (err) {
-		res.status(401).json({ msg: 'Token is not valid' });
+		console.error('something wrong with auth middleware');
+		res.status(500).json({ msg: 'Server Error' });
 	}
 };
