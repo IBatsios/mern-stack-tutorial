@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../../middleware/auth.js');
 
-const User = require('../../models/User.js');
+const User = require('../models/User.js');
 
 // @route   GET api/auth
 // @desc    Test route
