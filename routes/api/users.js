@@ -7,7 +7,7 @@ const config = require('config');
 const { check, validationResult } = require('express-validator');
 
 // Get the User model and store into User
-const User = require('../models/User.js');
+const User = require('../../models/User');
 
 // @route   POST api/users
 // @desc    Register user
